@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="原生JavaScript+Canvas制作FlappyBird小游戏(2)背景类，地面类，小鸟类，管道类第二天开始编写游戏界面的动画元素：所有的动画元素都继承自Actor类，每创建一个动画元素，调用父类构造方法将其放入到game.actors数组。注释：由于第二天对代码进行了一定重构，所以直接看不懂的变量名都会在最后进行解释，另外在Game类中新增加了属性也会在后边给出代码，另外还会给出resou">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原生JavaScript-Canvas制作FlappyBird小游戏(2)">
+<meta property="og:url" content="http://yoursite.com/原生JavaScript-Canvas制作FlappyBird小游戏-2/index.html">
+<meta property="og:site_name" content="WindyNanzi&#39;s blog">
+<meta property="og:description" content="原生JavaScript+Canvas制作FlappyBird小游戏(2)背景类，地面类，小鸟类，管道类第二天开始编写游戏界面的动画元素：所有的动画元素都继承自Actor类，每创建一个动画元素，调用父类构造方法将其放入到game.actors数组。注释：由于第二天对代码进行了一定重构，所以直接看不懂的变量名都会在最后进行解释，另外在Game类中新增加了属性也会在后边给出代码，另外还会给出resou">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/2018_11_18/00.png">
+<meta property="og:image" content="http://yoursite.com/images/2018_11_18/01.png">
+<meta property="og:image" content="http://yoursite.com/images/2018_11_18/02.png">
+<meta property="og:updated_time" content="2018-11-18T03:27:13.591Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="原生JavaScript-Canvas制作FlappyBird小游戏(2)">
+<meta name="twitter:description" content="原生JavaScript+Canvas制作FlappyBird小游戏(2)背景类，地面类，小鸟类，管道类第二天开始编写游戏界面的动画元素：所有的动画元素都继承自Actor类，每创建一个动画元素，调用父类构造方法将其放入到game.actors数组。注释：由于第二天对代码进行了一定重构，所以直接看不懂的变量名都会在最后进行解释，另外在Game类中新增加了属性也会在后边给出代码，另外还会给出resou">
+<meta name="twitter:image" content="http://yoursite.com/images/2018_11_18/00.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/原生JavaScript-Canvas制作FlappyBird小游戏-2/">
+
+
+
+
+
+  <title>原生JavaScript-Canvas制作FlappyBird小游戏(2) | WindyNanzi's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">WindyNanzi's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-something">
+          <a href="/something" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            something
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/原生JavaScript-Canvas制作FlappyBird小游戏-2/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WindyNanzi's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">原生JavaScript-Canvas制作FlappyBird小游戏(2)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-17T22:35:29+08:00">
+                2018-11-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="原生JavaScript-Canvas制作FlappyBird小游戏-2"><a href="#原生JavaScript-Canvas制作FlappyBird小游戏-2" class="headerlink" title="原生JavaScript+Canvas制作FlappyBird小游戏(2)"></a>原生JavaScript+Canvas制作FlappyBird小游戏(2)</h1><h2 id="背景类，地面类，小鸟类，管道类"><a href="#背景类，地面类，小鸟类，管道类" class="headerlink" title="背景类，地面类，小鸟类，管道类"></a>背景类，地面类，小鸟类，管道类</h2><p>第二天开始编写游戏界面的动画元素：<br>所有的动画元素都继承自Actor类，每创建一个动画元素，调用父类构造方法将其放入到game.actors数组。<br><strong>注释：</strong>由于第二天对代码进行了一定重构，所以直接看不懂的变量名都会在最后进行解释，另外在Game类中新增加了属性也会在后边给出代码，另外还会给出resource.json 与 config.json这些都作为实际参数，另：game是Game的实例化对象，根据上一篇博客的介绍，传入canvas的id进行Game的实例化。<br><a id="more"></a></p>
+<ul>
+<li><p>背景类 Background.js：<br>背景图片是固定长宽的，所以想让背景看起来填充了整个画布，就是让它在X轴方向多绘制几张，这里是3张，是因为考虑到远方背景也可以移动，移动了一张背景后，瞬间将第一张背景的X值设置为0，也就是让它再撤回来，这就是动画的原理。<br>然后需要渲染天空的颜色，图片顶部与画布顶部之间存在的空白利用猫腻矩形填充，填充色就是天空的颜色，这样看起来就像图片铺满了画布<br>绘制过程如图（这个绘图软件在我这里出现了部分乱码，有的字打不出来，见谅）：<br><img src="../images/2018_11_18/00.png" alt="" title="绘制背景与大地"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">(function()&#123;</span><br><span class="line">	var Background = window.Background = Actor.extend(&#123;</span><br><span class="line">		init : function()&#123;</span><br><span class="line">			// 随机选择一张背景图</span><br><span class="line">			var image_no = parseInt(Math.random()*2);</span><br><span class="line">			var image_name = &quot;bg_day&quot;;</span><br><span class="line">			// 设置猫腻矩形的背景色</span><br><span class="line">			this.sky_color = game.config.day_color;</span><br><span class="line">			if(image_no == 1)&#123;</span><br><span class="line">				image_name = &quot;bg_night&quot;;</span><br><span class="line">				this.sky_color = game.config.night_color;</span><br><span class="line">			&#125;</span><br><span class="line">			this.image = game.resource[image_name];</span><br><span class="line">			// 设置图片的位置</span><br><span class="line">			// 需要将画布中天空到地平线的高度减去图片中天空到地平线的高度的值设置为绘制的 Y轴初始值</span><br><span class="line">			// img_bg_horizon为图片中天空到大地之间的距离</span><br><span class="line">			this.x = 0;</span><br><span class="line">			this.y = game.horizon_Y - game.config.img_bg_horizon;</span><br><span class="line"></span><br><span class="line">			this._super();</span><br><span class="line">		&#125;,</span><br><span class="line">		update : function()&#123;</span><br><span class="line"></span><br><span class="line">		&#125;,</span><br><span class="line">		render : function()&#123;</span><br><span class="line">			// 绘制猫腻矩形</span><br><span class="line">			game.ctx.fillStyle = this.sky_color;</span><br><span class="line">			// 计算可能存在一定误差</span><br><span class="line">			game.ctx.fillRect(0,0,game.game_width,this.y+1);</span><br><span class="line">			game.ctx.drawImage(this.image,this.x,this.y);</span><br><span class="line">			game.ctx.drawImage(this.image,this.x + game.config.img_bg_width,this.y);</span><br><span class="line">			game.ctx.drawImage(this.image,this.x + game.config.img_bg_width * 2,this.y);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>大地类 Land.js:<br>大地类没啥可说的，大地图片的绘制Y轴的起点需要在 <strong>画布中地平线的Y轴位置</strong> 减去 <strong>图片中地平线的Y轴位置</strong><br>需要提的一点是大地的移动速度由config.land_speed调控，是考虑到后期会有游戏场景的切换，比如小鸟撞到杆子的时候，大地的移动速度是0<br>利用config这个中介者方便调控</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">// 大地</span><br><span class="line">(function()&#123;</span><br><span class="line">	var Land = window.Land = Actor.extend(&#123;</span><br><span class="line">		init : function()&#123;</span><br><span class="line">			this.image = game.resource[&quot;land&quot;];</span><br><span class="line"></span><br><span class="line">			this.x = 0;</span><br><span class="line">			this.y = game.horizon_Y</span><br><span class="line"></span><br><span class="line">			this._super();</span><br><span class="line">		&#125;,</span><br><span class="line">		update : function()&#123;</span><br><span class="line">			// 这里速度由config中的land_speed调控</span><br><span class="line">			this.x -= game.config.land_speed;</span><br><span class="line">			if( this.x &lt; -1*game.config.img_land_width )&#123;</span><br><span class="line">				this.x = 0;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;,</span><br><span class="line">		render : function()&#123;</span><br><span class="line">			game.ctx.drawImage(this.image,this.x,this.y);</span><br><span class="line">			game.ctx.drawImage(this.image,this.x + game.config.img_land_width,this.y);</span><br><span class="line">			game.ctx.drawImage(this.image,this.x + game.config.img_land_width * 2,this.y);</span><br><span class="line">			game.ctx.fillStyle = game.config.land_color;</span><br><span class="line">			game.ctx.fillRect(0,this.y + game.config.img_land_height,game.game_width,game.game_height- this.y - game.config.img_land_height);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>小鸟类 Bird.js：<br>小鸟类是十分复杂的一个类，虽然代码中注释很多，在这还是需要说很多。<br>++ 首先是图片，小鸟自身有不同颜色且有不同形态，所以需要为其进行选择，同时小鸟除了落地，所有场景都是在扑打翅膀的，所以每次渲染都要改变其图片状态。<br>++ 第二是小鸟的位置，要明白小鸟本身没有向前飞，而是大地与管子向左移动，所以小鸟的X坐标是固定的，由于这个值会反复用到，我在Game类中添加了这个属性。这个属性值随着画布的宽而改变，画布宽 乘以 1 - 黄金分割数，看起来就要优美一些。。<br>++ 第三是的纵向运动，这设计它的旋转和高度的变化。旋转和坐标系的位置有关，<strong>每次旋转都需要先保存当前状态，移动画布的原点，然后整个画布旋转，再返回到之前的状态</strong>，而位置又和小鸟图片有关，不详细展开了。高度变化与下落算法有关，就如同高中的自由落体运动。所以小鸟的运动需要单独设置一个帧，来监控小鸟的状态。<strong>下落算法参照自由落体运动，每帧小鸟下落时越来越快的，这个值和帧数成正比。（高中物理公式推导）。这样通过距离的计算量就相对于公式的计算量少多了。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line">(function()&#123;</span><br><span class="line">	var Bird = window.Bird = Actor.extend(&#123;</span><br><span class="line">		init : function()&#123;</span><br><span class="line">			this.bird_no = parseInt(Math.random()*3);</span><br><span class="line">			this.image_no = 0;</span><br><span class="line">			this.image_name = [</span><br><span class="line">				&quot;bird&quot;+this.bird_no+&quot;_0&quot;,</span><br><span class="line">				&quot;bird&quot;+this.bird_no+&quot;_1&quot;,</span><br><span class="line">				&quot;bird&quot;+this.bird_no+&quot;_2&quot;</span><br><span class="line">			];</span><br><span class="line">			this.image = game.resource[this.image_name[this.image_no]];</span><br><span class="line">			// 初始位置</span><br><span class="line">			this.x = game.bird_X;</span><br><span class="line">			this.y = game.horizon_Y / 2 - game.config.img_bird_height / 2;</span><br><span class="line">			// 小鸟的真实高度与宽度</span><br><span class="line">			this.width = game.config.bird_width;</span><br><span class="line">			this.height = game.config.bird_height;</span><br><span class="line">			// 小鸟飞翔初始旋转角度</span><br><span class="line">			this.degree = 0;</span><br><span class="line">			// 小鸟是否向上飞翔</span><br><span class="line">			this.is_fly = false;</span><br><span class="line">			// 是否死亡</span><br><span class="line">			this.is_die = false;</span><br><span class="line">			// 除了游戏场景，其他场景的小鸟仅仅是扇动翅膀，所以需要一个控制变量</span><br><span class="line">			this.is_flappy = game.config.bird_is_flappy;</span><br><span class="line">			// 小鸟的频率</span><br><span class="line">			this.fno = 0;</span><br><span class="line">			this._super();</span><br><span class="line">		&#125;,</span><br><span class="line">		update : function()&#123;</span><br><span class="line">			this.is_flappy = game.config.bird_is_flappy;</span><br><span class="line">			if(!this.is_die)&#123;</span><br><span class="line">				//控制小鸟扇动翅膀的频率 </span><br><span class="line">				this.fno % game.config.bird_flappy_fno  === 0 &amp;&amp; this.flappy();</span><br><span class="line">			&#125;</span><br><span class="line">			// 在游玩游戏的场景下,小鸟才会上升和下降</span><br><span class="line">			if(!this.is_flappy)&#123;</span><br><span class="line">				if(this.is_fly)&#123;</span><br><span class="line">					// 设置小鸟在固定帧内上向上飞，上飞的距离是递减但是固定的</span><br><span class="line">					this.y -= game.config.bird_fly_percent*(game.config.bird_fly_distance - this.fno);</span><br><span class="line">					</span><br><span class="line">					// 上飞固定帧之后准备降落</span><br><span class="line">					if(this.fno == game.config.bird_fly_fno)&#123;</span><br><span class="line">						this.is_fly = false;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;else&#123;</span><br><span class="line">					// 下落时满足下落算法</span><br><span class="line">					this.y += game.config.bird_down_percent * this.fno;</span><br><span class="line">				&#125;</span><br><span class="line">				this.degree += game.config.bird_down_degree;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			// 检测天空,碰到天花板就准备下落</span><br><span class="line">			if(this.y &lt; 0)&#123;</span><br><span class="line">				this.y = 0;</span><br><span class="line">				this.is_fly = false;</span><br><span class="line">			&#125;else if(this.y &gt; game.canvas.height * game.config.img_bg_proportionY - game.config.bird_height / 2)&#123;</span><br><span class="line">				// AABB盒碰撞检测，检测是否碰撞是看紧紧裹着小鸟的矩形的四条边进行碰撞检测</span><br><span class="line">				// game.config.bird_height/2 是小鸟的中心点距离小鸟的肚皮（底边）的距离</span><br><span class="line"></span><br><span class="line">				this.y = game.canvas.height * game.config.img_bg_proportionY - game.config.bird_height / 2;</span><br><span class="line">				// π/2</span><br><span class="line">				this.degree = Math.PI / 2;</span><br><span class="line">				clearInterval(game.timer);</span><br><span class="line">			&#125;</span><br><span class="line">			this.fno ++;</span><br><span class="line">		&#125;,</span><br><span class="line">		render : function()&#123;</span><br><span class="line">			// 做旋转动画需要移动坐标系的原点，所以要保存旋转前的坐标状态，旋转之后又恢复。这样动画才互不影响</span><br><span class="line">			game.ctx.save();</span><br><span class="line">			game.ctx.translate(this.x ,this.y);</span><br><span class="line">			game.ctx.rotate(this.degree);</span><br><span class="line">			// 由于画布原点已经移动到了预想中小鸟图片中心点的位置，所以绘制的时候将小鸟向左上移动将图片中心点与设置中心点重合</span><br><span class="line">			game.ctx.drawImage(this.image,- game.config.img_bird_width / 2,- game.config.img_bird_height / 2);</span><br><span class="line">			// 添加以下语句可以确定小鸟的位置</span><br><span class="line">			// game.ctx.fillRect(0,0,10,10);</span><br><span class="line">			game.ctx.restore();</span><br><span class="line">		&#125;,</span><br><span class="line">		// 扇动翅膀</span><br><span class="line">		flappy : function()&#123;</span><br><span class="line">			this.image_no ++ ;</span><br><span class="line">			if(this.image_no &gt; 2)&#123;</span><br><span class="line">				this.image_no = 0;</span><br><span class="line">			&#125;</span><br><span class="line">			this.image = game.resource[this.image_name[this.image_no]];</span><br><span class="line">		&#125;,</span><br><span class="line">		// 向上飞</span><br><span class="line">		fly : function()&#123;</span><br><span class="line">			// 首先小鸟下降的频度置零</span><br><span class="line">			this.fno = 0;</span><br><span class="line">			// 设置小鸟每次向上飞时朝上的弧度为0.3</span><br><span class="line">			this.degree = game.config.bird_fly_degree;</span><br><span class="line">			this.is_fly = true;</span><br><span class="line">		&#125;,</span><br><span class="line">		die : function()&#123;</span><br><span class="line">			this.is_die = true;</span><br><span class="line">			this.image_no = 1;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>管道类 Pipe.js:<br>管道类同样是一个复杂的类。<br>++ 首先是画管道，管道是成对出现，然后是开口距离固定，每组管道与管道之间的距离是固定的。所以需要一个小算法来画管道。需要知道上边管道的高度（随机值），再来判断下边管道的高度。<strong>渲染时不直接添加图片，而是需要切图，即ctx.drawImage()需要设置9个参数</strong>。<br>++ 还值得注意一点的是，管道不能调用父类的构造函数，因为这会造成渲染重叠问题，<strong>小鸟的渲染级别一定要比管道高（即小鸟不会被管道遮住）。但管道是在定时器中按一定规则加载的。它会不停的生成，所以这里的解决方法是把它放置到一个数组pipes[]里，game.js中再将pipes[]数组push进入actors[]数组中，等它push之后再push小鸟对象进入actors[]数组。这样小鸟的渲染优先级就高于管道了</strong>。<br>++ 管道在跑出画布之后应该进行删除，只要调用pipes[]的shift方法就行。需要注意的是调用时机，需要在完全跑出去时调用。同时。game.js遍历渲染actors[]数组时，对push进去的pipes[]添加render()与update()方法。<br>++ 为了实现按一定距离出现管子，需要配置管子的编号，每当 <strong>大地移动的距离 除以 管子组与管子组之间的距离 的 Int 值</strong>比当前管字编号大，就新增管子，这样是方便对游戏参数进行调控，所以这个固定距离设置在config里。还需要参照Game.js加以理解这个功能。<br>++ <strong>碰撞检测不是为小鸟添加，而是为管子添加，管子来判断小鸟到底有没有碰到它</strong>所以涉及一个小算法。画个图其实也就能明白了。<br>绘制过程如下图：<br><img src="../images/2018_11_18/01.png" alt="" title="绘制管道"><br><img src="../images/2018_11_18/02.png" alt="" title="碰撞检测"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">(function()&#123;</span><br><span class="line">	var Pipe = window.Pipe = Actor.extend(&#123;</span><br><span class="line">		init : function()&#123;</span><br><span class="line">			this.pipe_down = game.resource[&quot;pipe_down&quot;];</span><br><span class="line">			this.pipe_up = game.resource[&quot;pipe_up&quot;];</span><br><span class="line">			// 每一组管子之间的距离是相等的</span><br><span class="line">			this.pipe_between_space = game.config.pipe_between_distance;</span><br><span class="line">			// 随机一个高度，这个高度应该满足一个区间，区间应当对上对下的高度分配差不多,最小高度应该为另外一边恰好为一边管子图片的最大高度时</span><br><span class="line">			var pipe_min_height = game.game_height - game.config.pipe_height -game.config.pipe_between_distance;</span><br><span class="line">			this.pipe_down_height = pipe_min_height + parseInt(Math.random()*(game.config.pipe_height - pipe_min_height));</span><br><span class="line">			this.pipe_up_height = game.horizon_Y - this.pipe_down_height - game.config.pipe_between_distance;</span><br><span class="line"></span><br><span class="line">			// 设置管子长宽</span><br><span class="line">			this.width = game.config.pipe_width;</span><br><span class="line">			this.height = game.config.pipe_height;</span><br><span class="line">			//管子出现的位置 原始设置为1.5的屏幕宽长度</span><br><span class="line">			this.x = game.game_width * game.config.first_pipe_appear;</span><br><span class="line">			</span><br><span class="line">			</span><br><span class="line">			// this._super();</span><br><span class="line">			game.pipes.push(this);</span><br><span class="line">			game.config.pipe_arr_length ++;</span><br><span class="line">			game.config.last_pipe_no ++ ;</span><br><span class="line">		&#125;,</span><br><span class="line">		update : function()&#123;</span><br><span class="line">			// 管子速度和大地滚动速度应该一致</span><br><span class="line">			this.x -= game.config.land_speed;</span><br><span class="line">			// 在管子完全经过：即当前管子的宽度+ 管子组与管子组之间的距离时，删除管子</span><br><span class="line">			// 否则弹出管子之后画面会存在一定的停顿</span><br><span class="line">			if(this.x &lt;=  -(game.config.pipe_width + game.config.land_speed * game.config.pipe_appear_fno))&#123;</span><br><span class="line">				this.die();</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			// 需要对鸟进行碰撞检测,小鸟的x值是固定不变的</span><br><span class="line">			// 首先判断小鸟是否在管子中间</span><br><span class="line">			if(game.bird_X + game.config.bird_width / 2 &gt;= this.x &amp;&amp; game.bird_X - game.config.bird_width / 2 &lt;= this.x + this.width)&#123;</span><br><span class="line">				if(game.bird.y - game.config.bird_height / 2  &gt; this.pipe_down_height &amp;&amp; game.bird.y + game.config.bird_height / 2 &lt; this.pipe_down_height + game.config.pipe_between_distance )&#123;</span><br><span class="line"></span><br><span class="line">				&#125;else&#123;</span><br><span class="line">					console.log(&quot;wooooo!&quot;);</span><br><span class="line">					// clearInterval(game.timer);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			if(game.bird_X + game.config.bird_width / 2 &gt;= this.x + this.width &amp;&amp; !this.is_bird_passed)&#123;</span><br><span class="line">				this.is_bird_passed = true;</span><br><span class="line">				game.score ++ ;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;,</span><br><span class="line">		render : function()&#123;</span><br><span class="line">			// 画图时应当对图片进行切取</span><br><span class="line">			game.ctx.drawImage(this.pipe_down,0,this.height-this.pipe_down_height,this.width,this.pipe_down_height, this.x ,0,this.width,this.pipe_down_height);</span><br><span class="line">			game.ctx.drawImage(this.pipe_up,0,0,this.width,this.pipe_up_height, this.x ,this.pipe_down_height + game.config.pipe_between_distance,this.width,this.pipe_up_height);</span><br><span class="line">		&#125;,</span><br><span class="line">		die : function()&#123;</span><br><span class="line">			 game.pipes.shift();</span><br><span class="line">			 game.config.pipe_arr_length --;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);	</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>中介者 Game.js：<br>有部分改动。之后改动应该会小许多。新增方法setConfig 单独处理配置各种参数，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br></pre></td><td class="code"><pre><span class="line">// 利用中介者模式实现类与类之间的通信</span><br><span class="line">// Game类中包含的都是全局变量</span><br><span class="line">// Game类负责游戏初始化(资源加载，参数设置)，类与类之间的通讯，后期还涉及场景的管理</span><br><span class="line">(function()&#123;</span><br><span class="line">	var Game = window.Game = Class.extend(&#123;</span><br><span class="line">		init : function(canvas_id)&#123;</span><br><span class="line">			this.canvas = document.querySelector(canvas_id);</span><br><span class="line">			this.ctx  = this.canvas.getContext(&apos;2d&apos;);</span><br><span class="line">			// 配置文件路径</span><br><span class="line">			this.config_url = &quot;config.json&quot;;</span><br><span class="line">			// 资源文件路径</span><br><span class="line">			this.resource_url = &quot;resource.json&quot;;</span><br><span class="line">			this.config = &#123;&#125;;</span><br><span class="line">			this.resource_obj = &#123;&#125;;</span><br><span class="line">			this.resource = &#123;&#125;;</span><br><span class="line">			// 游戏画布的宽高</span><br><span class="line">			this.game_width = document.documentElement.clientWidth;</span><br><span class="line">			this.game_height = document.documentElement.clientHeight;</span><br><span class="line">			// 演员数组</span><br><span class="line">			this.actors = [];</span><br><span class="line">			// 地平线的Y轴是一个固定的值，所以可以将其单独提出来</span><br><span class="line">			this.horizon_Y = 0;</span><br><span class="line">			// 管道作为一个特殊的类，我们需要将其单独提出来</span><br><span class="line">			this.pipes = [];</span><br><span class="line">			// 小鸟的横坐标是个固定值，但是需要根据屏幕进行调整，所以放在Game类</span><br><span class="line">			this.bird_X = 0;</span><br><span class="line">			</span><br><span class="line">			// 游戏进程的帧</span><br><span class="line">			this.fno = 0;</span><br><span class="line">			this.load();</span><br><span class="line">		&#125;,</span><br><span class="line">		load : function()&#123;</span><br><span class="line">			var self = this;</span><br><span class="line">			</span><br><span class="line"></span><br><span class="line">			// 加载参数文件</span><br><span class="line">			Ajax(&#123;</span><br><span class="line">				&quot;method&quot; : &apos;GET&apos;,</span><br><span class="line">				&quot;url&quot; : &quot;config.json&quot;,</span><br><span class="line">				&quot;async&quot; : true</span><br><span class="line">			&#125;).then(function(text)&#123;</span><br><span class="line">				</span><br><span class="line">				self.config = JSON.parse(text);</span><br><span class="line">				// 设置各种参数</span><br><span class="line">				self.setConfig();</span><br><span class="line">				// 提示用户加载资源</span><br><span class="line">				self.ctx.textAlign = &quot;center&quot;;</span><br><span class="line">				self.ctx.font = &quot;30px 微软雅黑&quot;;</span><br><span class="line">				// 0.382+黄金分割数0.618  = 1</span><br><span class="line">				self.ctx.fillText(&quot;正在加载游戏资源...&quot;,self.game_width/2,self.game_height*0.382);</span><br><span class="line">				//加载完配置之后引入资源文件</span><br><span class="line">				return Ajax(&#123;</span><br><span class="line">					&quot;method&quot; : &quot;GET&quot;,</span><br><span class="line">					&quot;url&quot; : &quot;resource.json&quot;,</span><br><span class="line">					&quot;async&quot; : true</span><br><span class="line">				&#125;);</span><br><span class="line">			&#125;).then(function(text)&#123;</span><br><span class="line">				self.resource_obj = JSON.parse(text);</span><br><span class="line">				// 载入图片资源</span><br><span class="line">				// 图片计时器</span><br><span class="line">				var count = 0,</span><br><span class="line">					// 图片的数目</span><br><span class="line">					image_count = Object.keys(self.resource_obj.images).length;</span><br><span class="line">				for(k in self.resource_obj.images)&#123;</span><br><span class="line">					self.resource[k] = new Image();</span><br><span class="line">					self.resource[k].src = self.resource_obj.images[k];</span><br><span class="line">					self.resource[k].onload = function()&#123;</span><br><span class="line">						count ++ ;</span><br><span class="line">						self.ctx.clearRect(0,0,self.game_width,self.game_height);</span><br><span class="line">						self.ctx.fillText(&quot;正在加载图片&quot;+count+&quot;/&quot;+image_count,self.game_width/2,self.game_height*0.382);</span><br><span class="line">						if (count == image_count) &#123;</span><br><span class="line">							// 目前图片加载完成即可开始游戏</span><br><span class="line">							self.start();</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;).catch(function(status)&#123;</span><br><span class="line">				console.log(status);</span><br><span class="line">			&#125;)</span><br><span class="line">		&#125;,</span><br><span class="line">		setConfig : function()&#123;</span><br><span class="line">			var self = this;</span><br><span class="line">			// 首先根据屏幕大小设置游戏画布的宽高</span><br><span class="line">			if(self.game_width &gt; self.config.window_max_width )&#123;</span><br><span class="line">				self.game_width = self.config.window_max_width;</span><br><span class="line">			&#125;else if(self.game_width &lt; self.config.window_min_width)&#123;</span><br><span class="line">				self.game_width = self.config.window_min_width;</span><br><span class="line">			&#125;</span><br><span class="line">			if(self.game_height &gt; self.config.window_max_height)&#123;</span><br><span class="line">				self.game_height = self.config.window_max_height;</span><br><span class="line">			&#125;else if(self.game_height &lt; self.config.window_min_height)&#123;</span><br><span class="line">				self.game_height = self.config.window_min_height;</span><br><span class="line">			&#125;</span><br><span class="line">			self.canvas.width = self.game_width;</span><br><span class="line">			self.canvas.height = self.game_height;</span><br><span class="line"></span><br><span class="line">			// 设置地平线的高度; img_bg_proportionY 是天空到地平线的距离占整个画布高度的百分比</span><br><span class="line">			self.horizon_Y = self.game_height * self.config.img_bg_proportionY;</span><br><span class="line"></span><br><span class="line">			// 0.382是黄金比例数，设置完画布的长宽后可以对小鸟的横坐标进行设置</span><br><span class="line">			self.bird_X = self.game_width * 0.382 - self.config.img_bird_width / 2;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">			// 为管道数组添加render方法与update方法</span><br><span class="line">			self.pipes.render = function()&#123;</span><br><span class="line">				// 通过配置文件中的len来调控数组</span><br><span class="line">				var len = self.config.pipe_arr_length;</span><br><span class="line">				for(var i = 0; i &lt; len; i++)&#123;</span><br><span class="line">					self.pipes[i] &amp;&amp; self.pipes[i].render();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			self.pipes.update = function()&#123;</span><br><span class="line">				var len = self.config.pipe_arr_length;</span><br><span class="line">				for(var i = 0; i &lt; len; i++)&#123;</span><br><span class="line">					self.pipes[i] &amp;&amp; self.pipes[i].update();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;,</span><br><span class="line">		start : function()&#123;</span><br><span class="line">			var self = this;</span><br><span class="line">			self.config.bird_is_flappy = false;</span><br><span class="line">			self.background = new Background();</span><br><span class="line">			self.actors.push( self.pipes );</span><br><span class="line">			self.bird = new Bird();</span><br><span class="line">			self.land =new Land();</span><br><span class="line">			self.canvas.onclick = function()&#123;</span><br><span class="line">				self.bird.fly();</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			self.timer = setInterval(function()&#123;</span><br><span class="line">				self.ctx.clearRect(0,0,self.game_width,self.game_height);</span><br><span class="line">				// 设置每格一定的距离就出现对管子</span><br><span class="line">				// 其想法是让config中 last_pipe_no 记住出现的管子对数 当大地向左移动的总距离 除以 管子组与管子组之间的固定距离</span><br><span class="line">				// 当除得的值转为Int后大于管子对数 ，就增加一组管子</span><br><span class="line">				parseInt((self.fno * self.config.land_speed ) / self.config.pipe_group_betwenn_distance ) &gt; self.config.last_pipe_no  &amp;&amp; new Pipe();</span><br><span class="line">				for(var i=0,len = self.actors.length;i&lt;len;i++)&#123;</span><br><span class="line">					self.actors[i].update();</span><br><span class="line">					self.actors[i].render();</span><br><span class="line">				&#125;</span><br><span class="line">				// 游戏帧率增加</span><br><span class="line">				self.fno ++ ;</span><br><span class="line">			&#125;,self.config.game_fno);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>资源文件 resource.json:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;images&quot;:&#123;</span><br><span class="line">		&quot;bg_day&quot; : &quot;images/bg_day.png&quot;,</span><br><span class="line">		&quot;bg_night&quot; : &quot;images/bg_night.png&quot;,</span><br><span class="line">		&quot;land&quot; : &quot;images/land.png&quot;,</span><br><span class="line">		&quot;pipe_down&quot; : &quot;images/pipe_down.png&quot;,</span><br><span class="line">		&quot;pipe_up&quot; : &quot;images/pipe_up.png&quot;,</span><br><span class="line">		&quot;bird0_0&quot; : &quot;images/bird0_0.png&quot;,</span><br><span class="line">		&quot;bird0_1&quot; : &quot;images/bird0_1.png&quot;,</span><br><span class="line">		&quot;bird0_2&quot; : &quot;images/bird0_2.png&quot;,</span><br><span class="line">		&quot;bird1_0&quot; : &quot;images/bird1_0.png&quot;,</span><br><span class="line">		&quot;bird1_1&quot; : &quot;images/bird1_1.png&quot;,</span><br><span class="line">		&quot;bird1_2&quot; : &quot;images/bird1_2.png&quot;,</span><br><span class="line">		&quot;bird2_0&quot; : &quot;images/bird2_0.png&quot;,</span><br><span class="line">		&quot;bird2_1&quot; : &quot;images/bird2_1.png&quot;,</span><br><span class="line">		&quot;bird2_2&quot; : &quot;images/bird2_2.png&quot;,</span><br><span class="line">		&quot;number0&quot; : &quot;images/0.png&quot;,</span><br><span class="line">		&quot;number1&quot; : &quot;images/1.png&quot;,</span><br><span class="line">		&quot;number2&quot; : &quot;images/2.png&quot;,</span><br><span class="line">		&quot;number3&quot; : &quot;images/3.png&quot;,</span><br><span class="line">		&quot;number4&quot; : &quot;images/4.png&quot;,</span><br><span class="line">		&quot;number5&quot; : &quot;images/5.png&quot;,</span><br><span class="line">		&quot;number6&quot; : &quot;images/6.png&quot;,</span><br><span class="line">		&quot;number7&quot; : &quot;images/7.png&quot;,</span><br><span class="line">		&quot;number8&quot; : &quot;images/8.png&quot;,</span><br><span class="line">		&quot;number9&quot; : &quot;images/9.png&quot;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置文件 config.json:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;window_max_width&quot; : 414,</span><br><span class="line">	&quot;window_min_width&quot; : 320,</span><br><span class="line">	&quot;window_max_height&quot; : 736,</span><br><span class="line">	&quot;window_mix_height&quot; : 500,</span><br><span class="line">	&quot;game_fno&quot; : 40,</span><br><span class="line">	&quot;img_bg_width&quot; : 288,</span><br><span class="line">	&quot;img_bg_height&quot; : 512,</span><br><span class="line">	&quot;img_bg_horizon&quot; : 408,</span><br><span class="line">	&quot;img_bg_proportionY&quot; : 0.8,</span><br><span class="line">	&quot;day_color&quot; : &quot;#4EC0CA&quot;,</span><br><span class="line">	&quot;night_color&quot; : &quot;#008793&quot;,</span><br><span class="line">	&quot;img_land_width&quot; : 336,</span><br><span class="line">	&quot;img_land_height&quot; : 112,</span><br><span class="line">	&quot;land_color&quot; : &quot;#DED895&quot;,</span><br><span class="line">	&quot;land_speed&quot; : 5,</span><br><span class="line">	&quot;land_distance&quot; : 0,</span><br><span class="line">	&quot;pipe_width&quot; : 52,</span><br><span class="line">	&quot;pipe_height&quot; : 320,</span><br><span class="line">	&quot;pipe_between_distance&quot; : 110,</span><br><span class="line">	&quot;pipe_group_betwenn_distance&quot; : 250,</span><br><span class="line">	&quot;pipe_arr_length&quot; : 0,</span><br><span class="line">	&quot;last_pipe_no&quot; : 0,</span><br><span class="line">	&quot;first_pipe_appear&quot; : 1.2,</span><br><span class="line">	&quot;img_bird_width&quot; : 48,</span><br><span class="line">	&quot;img_bird_height&quot; : 48,</span><br><span class="line">	&quot;bird_width&quot; : 26,</span><br><span class="line">	&quot;bird_height&quot; : 24,</span><br><span class="line">	&quot;bird_fly_percent&quot; : 1.1,</span><br><span class="line">	&quot;bird_fly_fno&quot; : 20,</span><br><span class="line">	&quot;bird_fly_distance&quot; : 10,</span><br><span class="line">	&quot;bird_fly_degree&quot; : -0.3,</span><br><span class="line">	&quot;bird_down_percent&quot; : 0.65,</span><br><span class="line">	&quot;bird_down_degree&quot; : 0.055,</span><br><span class="line">	&quot;bird_is_flappy&quot; : true, </span><br><span class="line">	&quot;bird_flappy_fno&quot; : 3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/原生JavaScript-Canvas制作FlappyBird小游戏/" rel="next" title="原生JavaScript+Canvas制作FlappyBird小游戏(1)">
+                <i class="fa fa-chevron-left"></i> 原生JavaScript+Canvas制作FlappyBird小游戏(1)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#原生JavaScript-Canvas制作FlappyBird小游戏-2"><span class="nav-number">1.</span> <span class="nav-text">原生JavaScript+Canvas制作FlappyBird小游戏(2)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景类，地面类，小鸟类，管道类"><span class="nav-number">1.1.</span> <span class="nav-text">背景类，地面类，小鸟类，管道类</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
