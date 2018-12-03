@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="原生JavaScript+Canvas制作FlappyBird小游戏(2)背景类，地面类，小鸟类，管道类第二天开始编写游戏界面的动画元素：所有的动画元素都继承自Actor类，每创建一个动画元素，调用父类构造方法将其放入到game.actors数组。注释：由于第二天对代码进行了一定重构，所以直接看不懂的变量名都会在最后进行解释，另外在Game类中新增加了属性也会在后边给出代码，另外还会给出resou">
+<meta name="description" content="原生JavaScript+Canvas制作FlappyBird小游戏(2)背景类，地面类，小鸟类，管道类游戏地址：传送门项目地址：传送门第二天开始编写游戏界面的动画元素：所有的动画元素都继承自Actor类，每创建一个动画元素，调用父类构造方法将其放入到game.actors数组。注释：由于第二天对代码进行了一定重构，所以直接看不懂的变量名都会在最后进行解释，另外在Game类中新增加了属性也会在后边">
 <meta property="og:type" content="article">
 <meta property="og:title" content="原生JavaScript-Canvas制作FlappyBird小游戏(2)">
 <meta property="og:url" content="http://yoursite.com/原生JavaScript-Canvas制作FlappyBird小游戏-2/index.html">
 <meta property="og:site_name" content="WindyNanzi&#39;s blog">
-<meta property="og:description" content="原生JavaScript+Canvas制作FlappyBird小游戏(2)背景类，地面类，小鸟类，管道类第二天开始编写游戏界面的动画元素：所有的动画元素都继承自Actor类，每创建一个动画元素，调用父类构造方法将其放入到game.actors数组。注释：由于第二天对代码进行了一定重构，所以直接看不懂的变量名都会在最后进行解释，另外在Game类中新增加了属性也会在后边给出代码，另外还会给出resou">
+<meta property="og:description" content="原生JavaScript+Canvas制作FlappyBird小游戏(2)背景类，地面类，小鸟类，管道类游戏地址：传送门项目地址：传送门第二天开始编写游戏界面的动画元素：所有的动画元素都继承自Actor类，每创建一个动画元素，调用父类构造方法将其放入到game.actors数组。注释：由于第二天对代码进行了一定重构，所以直接看不懂的变量名都会在最后进行解释，另外在Game类中新增加了属性也会在后边">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/2018_11_18/00.png">
 <meta property="og:image" content="http://yoursite.com/images/2018_11_18/01.png">
 <meta property="og:image" content="http://yoursite.com/images/2018_11_18/02.png">
-<meta property="og:updated_time" content="2018-11-18T03:27:13.591Z">
+<meta property="og:updated_time" content="2018-12-03T07:53:40.560Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="原生JavaScript-Canvas制作FlappyBird小游戏(2)">
-<meta name="twitter:description" content="原生JavaScript+Canvas制作FlappyBird小游戏(2)背景类，地面类，小鸟类，管道类第二天开始编写游戏界面的动画元素：所有的动画元素都继承自Actor类，每创建一个动画元素，调用父类构造方法将其放入到game.actors数组。注释：由于第二天对代码进行了一定重构，所以直接看不懂的变量名都会在最后进行解释，另外在Game类中新增加了属性也会在后边给出代码，另外还会给出resou">
+<meta name="twitter:description" content="原生JavaScript+Canvas制作FlappyBird小游戏(2)背景类，地面类，小鸟类，管道类游戏地址：传送门项目地址：传送门第二天开始编写游戏界面的动画元素：所有的动画元素都继承自Actor类，每创建一个动画元素，调用父类构造方法将其放入到game.actors数组。注释：由于第二天对代码进行了一定重构，所以直接看不懂的变量名都会在最后进行解释，另外在Game类中新增加了属性也会在后边">
 <meta name="twitter:image" content="http://yoursite.com/images/2018_11_18/00.png">
 
 
@@ -313,7 +313,7 @@
       
 
       
-        <h1 id="原生JavaScript-Canvas制作FlappyBird小游戏-2"><a href="#原生JavaScript-Canvas制作FlappyBird小游戏-2" class="headerlink" title="原生JavaScript+Canvas制作FlappyBird小游戏(2)"></a>原生JavaScript+Canvas制作FlappyBird小游戏(2)</h1><h2 id="背景类，地面类，小鸟类，管道类"><a href="#背景类，地面类，小鸟类，管道类" class="headerlink" title="背景类，地面类，小鸟类，管道类"></a>背景类，地面类，小鸟类，管道类</h2><p>第二天开始编写游戏界面的动画元素：<br>所有的动画元素都继承自Actor类，每创建一个动画元素，调用父类构造方法将其放入到game.actors数组。<br><strong>注释：</strong>由于第二天对代码进行了一定重构，所以直接看不懂的变量名都会在最后进行解释，另外在Game类中新增加了属性也会在后边给出代码，另外还会给出resource.json 与 config.json这些都作为实际参数，另：game是Game的实例化对象，根据上一篇博客的介绍，传入canvas的id进行Game的实例化。<br><a id="more"></a></p>
+        <h1 id="原生JavaScript-Canvas制作FlappyBird小游戏-2"><a href="#原生JavaScript-Canvas制作FlappyBird小游戏-2" class="headerlink" title="原生JavaScript+Canvas制作FlappyBird小游戏(2)"></a>原生JavaScript+Canvas制作FlappyBird小游戏(2)</h1><h2 id="背景类，地面类，小鸟类，管道类"><a href="#背景类，地面类，小鸟类，管道类" class="headerlink" title="背景类，地面类，小鸟类，管道类"></a>背景类，地面类，小鸟类，管道类</h2><p><strong>游戏地址：<a href="https://windynanzi.github.io/flappyBird" title="传送门" target="_blank" rel="noopener">传送门</a></strong><br><strong>项目地址：<a href="https://github.com/WindyNanzi/flappyBird" title="传送门" target="_blank" rel="noopener">传送门</a></strong><br>第二天开始编写游戏界面的动画元素：<br>所有的动画元素都继承自Actor类，每创建一个动画元素，调用父类构造方法将其放入到game.actors数组。<br><strong>注释：</strong>由于第二天对代码进行了一定重构，所以直接看不懂的变量名都会在最后进行解释，另外在Game类中新增加了属性也会在后边给出代码，另外还会给出resource.json 与 config.json这些都作为实际参数，另：game是Game的实例化对象，根据上一篇博客的介绍，传入canvas的id进行Game的实例化。<br><a id="more"></a></p>
 <ul>
 <li><p>背景类 Background.js：<br>背景图片是固定长宽的，所以想让背景看起来填充了整个画布，就是让它在X轴方向多绘制几张，这里是3张，是因为考虑到远方背景也可以移动，移动了一张背景后，瞬间将第一张背景的X值设置为0，也就是让它再撤回来，这就是动画的原理。<br>然后需要渲染天空的颜色，图片顶部与画布顶部之间存在的空白利用猫腻矩形填充，填充色就是天空的颜色，这样看起来就像图片铺满了画布<br>绘制过程如图（这个绘图软件在我这里出现了部分乱码，有的字打不出来，见谅）：<br><img src="../images/2018_11_18/00.png" alt="" title="绘制背景与大地"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">(function()&#123;</span><br><span class="line">	var Background = window.Background = Actor.extend(&#123;</span><br><span class="line">		init : function()&#123;</span><br><span class="line">			// 随机选择一张背景图</span><br><span class="line">			var image_no = parseInt(Math.random()*2);</span><br><span class="line">			var image_name = &quot;bg_day&quot;;</span><br><span class="line">			// 设置猫腻矩形的背景色</span><br><span class="line">			this.sky_color = game.config.day_color;</span><br><span class="line">			if(image_no == 1)&#123;</span><br><span class="line">				image_name = &quot;bg_night&quot;;</span><br><span class="line">				this.sky_color = game.config.night_color;</span><br><span class="line">			&#125;</span><br><span class="line">			this.image = game.resource[image_name];</span><br><span class="line">			// 设置图片的位置</span><br><span class="line">			// 需要将画布中天空到地平线的高度减去图片中天空到地平线的高度的值设置为绘制的 Y轴初始值</span><br><span class="line">			// img_bg_horizon为图片中天空到大地之间的距离</span><br><span class="line">			this.x = 0;</span><br><span class="line">			this.y = game.horizon_Y - game.config.img_bg_horizon;</span><br><span class="line"></span><br><span class="line">			this._super();</span><br><span class="line">		&#125;,</span><br><span class="line">		update : function()&#123;</span><br><span class="line"></span><br><span class="line">		&#125;,</span><br><span class="line">		render : function()&#123;</span><br><span class="line">			// 绘制猫腻矩形</span><br><span class="line">			game.ctx.fillStyle = this.sky_color;</span><br><span class="line">			// 计算可能存在一定误差</span><br><span class="line">			game.ctx.fillRect(0,0,game.game_width,this.y+1);</span><br><span class="line">			game.ctx.drawImage(this.image,this.x,this.y);</span><br><span class="line">			game.ctx.drawImage(this.image,this.x + game.config.img_bg_width,this.y);</span><br><span class="line">			game.ctx.drawImage(this.image,this.x + game.config.img_bg_width * 2,this.y);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
@@ -369,6 +369,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/原生JavaScript-Canvas制作FlappyBird小游戏-3/" rel="prev" title="原生JavaScript-Canvas制作FlappyBird小游戏-3">
+                原生JavaScript-Canvas制作FlappyBird小游戏-3 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -445,7 +449,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
